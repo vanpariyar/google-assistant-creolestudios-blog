@@ -1,0 +1,30 @@
+data.map( ( blog, key )=>{
+    conv.ask(new SimpleResponse({
+      speech: `New Blog title is ${ blog.title } `,
+      text: `New Blog title is ${ blog.title }`,
+    }));
+    conv.ask(new SimpleResponse({
+      speech: `Beautifully craft by ${ blog.author.name } `,
+      text: `Beautifully craft by ${ blog.author.name }`,
+    }));
+    conv.ask(new SimpleResponse({
+      speech: `Who is ${ blog.author.description } `,
+      text: `Who is ${ blog.author.description }`,
+    }));
+  });
+  
+  
+  /****
+  
+  
+    let data = [];
+    page.map(( post, key )=>{
+      if(key > 3){
+        return data;    
+      }
+      data.push({
+        'title': post.title.rendered,
+        'author': getAuthor(post.author.href)
+      });  
+    });
+    
