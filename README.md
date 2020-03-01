@@ -1,3 +1,14 @@
+## Google assistant chat app that 
+### fetch the new recent blog from creole Studios website.
+
+- Made With Express and node Js Backend.
+- Used [WP Rest API](https://developer.wordpress.org/rest-api/reference/posts/#definition) To get response from the Website.
+- Chat UI Powerd By [Google Assistant SDK Response API](https://developers.google.com/assistant/conversational/responses).
+- Platform Of hosting [Glitch](https://glitch.com/)
+- See [Demo On Glitch](https://glitch.com/edit/#!/creole-studios-blog).
+
+Thanks. Built With :heart: For amazing People.
+
 # hello-express
 
 A server that serves a webpage, its resources, and some data
