@@ -9,6 +9,17 @@
 
 Thanks. Built With :heart: For amazing People.
 
+Please open the Google assistant in your :iphone: mobile phone.
+and Say Talk to Creole Studios Blog
+Then You can say one line Given below.
+
+- Get recent blog.
+- Get new blog.
+- Get Blog.
+
+It will fetch the recent Blog from the Our website. :+1:
+list all your valuable suggestions directly on GitHub.
+
 # hello-express
 
 A server that serves a webpage, its resources, and some data
