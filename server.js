@@ -16,11 +16,11 @@ server.use(bodyParser.json({type: 'application/json'}));
 assistant.intent('Get New Blogs', async conv => {
   const data = await getBlogs();
   conv.close(new SimpleResponse({
-      speech: `New Blog title is ${ entities.decode(data.title) } buatifully written by ${ entities.decode(data.user.name) } who is ${ entities.decode(data.user.description) }`,
-      text: `New Blog title is ${ entities.decode(data.title) } buatifully written by ${ entities.decode(data.user.name) } who is ${ entities.decode(data.user.description) } ` ,
+      speech: `New Blog title is ${ entities.decode(data.title) } beautifully written by ${ entities.decode(data.user.name) } who is ${ entities.decode(data.user.description) }`,
+      text: `New Blog title is ${ entities.decode(data.title) } beautifully written by ${ entities.decode(data.user.name) } who is ${ entities.decode(data.user.description) } ` ,
   }));
   conv.close(new BasicCard({
-    text: `New Blog title is ${ entities.decode(data.title) } buatifully written by **${ entities.decode(data.user.name) }** who is *${ entities.decode(data.user.description) }* `, // Note the two spaces before '\n' required for
+    text: `New Blog title is ${ entities.decode(data.title) } beautifully written by **${ entities.decode(data.user.name) }** who is *${ entities.decode(data.user.description) }* `, // Note the two spaces before '\n' required for
     subtitle: `${ entities.decode(data.user.name) }`,
     title: `Title: ${ entities.decode(data.title) }`,
     buttons: new Button({
@@ -68,6 +68,8 @@ async function getBlogs() {
 }
 
 server.post('/creole', assistant);
+
+server.get('/')
 
 server.listen(server.get('port'), function () {
 	console.log('Express server started on port', server.get('port'));
