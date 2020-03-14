@@ -10,7 +10,7 @@
 Thanks. Built With :heart: For amazing People.
 
 Please open the Google assistant in your :iphone: mobile phone.
-and Say Talk to Creole Studios Blog
+and **Say Talk to Creole Studios Blog**
 Then You can say one line Given below.
 
 - Get recent blog.
