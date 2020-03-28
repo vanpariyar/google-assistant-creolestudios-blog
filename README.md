@@ -18,6 +18,13 @@ Then You can say one line Given below.
 - Get Blog.
 
 It will fetch the recent Blog from the Our website. :+1:
+
+If you get the error, Please do second time.
+
+Becuase Glitch is Free platform that sleeps after 5 minute of inactivity.
+
+your first request is Wakes up server and Second time you'll get output.
+
 list all your valuable suggestions directly on GitHub.
 
 # hello-express
