@@ -28,8 +28,8 @@ assistant.intent('Get New Blogs', async conv => {
       url: data.link,
     }),
     image: new Image({
-      url: 'https://www.creolestudios.com/wp-content/uploads/2019/11/Creole-Defualt.png',
-      alt: 'Creole Studios',
+      url: data.image.url,
+      alt: data.image.alt,
     }),
     display: 'CROPPED',
   }));
@@ -51,6 +51,19 @@ async function getAuthor(url){
       "description": user.description,
     }
 }
+async function getFeaturedImage(mediaId){
+    let media = await fetch( 'https://www.creolestudios.com/wp-json/wp/v2/media/' + mediaId , {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }).then(res => res.json());  
+
+    return {
+      "url": media.media_details.sizes.medium.source_url,
+      "alt": media.title.rendered,
+    }
+}
 async function getBlogs() {
     let page = await fetch('http://creolestudios.com/wp-json/wp/v2/posts?per_page=1' , {
       method: 'GET',
@@ -58,11 +71,13 @@ async function getBlogs() {
         'Content-Type': 'application/json',
       }
     }).then(res => res.json());
-    const author = await getAuthor(page[0].author)
+    const author = await getAuthor(page[0].author);
+    const image = await getFeaturedImage(page[0].featured_media);
     return {
       'title': page[0].title.rendered,
       'user': author,
       'link': page[0].link,
+      'image': image, 
     }
    
 }
