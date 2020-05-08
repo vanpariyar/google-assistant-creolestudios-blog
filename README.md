@@ -62,5 +62,5 @@ Find out more [about Glitch](https://glitch.com/about).
 
 OR
 
-[Join Buy me A Coffee](buymeacoff.ee/?via=vanpariyar) ( I will recieve small commition by signing, You don,t have to pay any money )
+[Join Buy me A Coffee](https://buymeacoff.ee/?via=vanpariyar) ( I will recieve small commition by signing, You don,t have to pay any money )
 
