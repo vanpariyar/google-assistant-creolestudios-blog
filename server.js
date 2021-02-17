@@ -74,6 +74,19 @@ async function getFeaturedImage(mediaId){
       "alt": media[0].title.rendered,
     }
 }
+async function getFeaturedImage(mediaId){
+    let media = await fetch( 'https://www.creolestudios.com/wp-json/wp/v2/media/' + mediaId , {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }).then(res => res.json());  
+
+    return {
+      "url": media.media_details.sizes.medium.source_url,
+      "alt": media.title.rendered,
+    }
+}
 async function getBlogs() {
     let page = await fetch('https://creolestudios.com/wp-json/wp/v2/posts?per_page=1&_embed' , {
       method: 'GET',

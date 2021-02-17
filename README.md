@@ -57,3 +57,9 @@ Click `Show` in the header to see your app live. Updates to your code will insta
 Find out more [about Glitch](https://glitch.com/about).
 
 ( ᵔ ᴥ ᵔ )
+
+<a href="https://www.buymeacoffee.com/vanpariyar" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
+
+OR
+
+[Join Buy me A Coffee](https://buymeacoff.ee/?via=vanpariyar) ( I will recieve small commition by signing, You don,t have to pay any money )
