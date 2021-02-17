@@ -13,14 +13,16 @@ const assistant = dialogflow();
 server.set('port', process.env.PORT || 5000);
 server.use(bodyParser.json({type: 'application/json'}));
 
+server.use(express.json());
+
 assistant.intent('Get New Blogs', async conv => {
   const data = await getBlogs();
   conv.close(new SimpleResponse({
-      speech: `New Blog title is ${ entities.decode(data.title) } buatifully written by ${ entities.decode(data.user.name) } who is ${ entities.decode(data.user.description) }`,
-      text: `New Blog title is ${ entities.decode(data.title) } buatifully written by ${ entities.decode(data.user.name) } who is ${ entities.decode(data.user.description) } ` ,
+      speech: `New Blog title is ${ entities.decode(data.title) } beautifully written by ${ entities.decode(data.user.name) } who is ${ entities.decode(data.user.description) }`,
+      text: `New Blog title is ${ entities.decode(data.title) } beautifully written by ${ entities.decode(data.user.name) } who is ${ entities.decode(data.user.description) } ` ,
   }));
   conv.close(new BasicCard({
-    text: `New Blog title is ${ entities.decode(data.title) } buatifully written by **${ entities.decode(data.user.name) }** who is *${ entities.decode(data.user.description) }* `, // Note the two spaces before '\n' required for
+    text: `New Blog title is ${ entities.decode(data.title) } beautifully written by **${ entities.decode(data.user.name) }** who is *${ entities.decode(data.user.description) }* `, // Note the two spaces before '\n' required for
     subtitle: `${ entities.decode(data.user.name) }`,
     title: `Title: ${ entities.decode(data.title) }`,
     buttons: new Button({
@@ -28,8 +30,8 @@ assistant.intent('Get New Blogs', async conv => {
       url: data.link,
     }),
     image: new Image({
-      url: 'https://www.creolestudios.com/wp-content/uploads/2019/11/Creole-Defualt.png',
-      alt: 'Creole Studios',
+      url: data.image.url,
+      alt: data.image.alt,
     }),
     display: 'CROPPED',
   }));
@@ -39,6 +41,7 @@ assistant.intent('Get New Blogs', async conv => {
 
 /* Getting blog Data */
 async function getAuthor(url){
+  try{
     let user = await fetch( 'https://www.creolestudios.com/wp-json/wp/v2/users/' + url , {
       method: 'GET',
       headers: {
@@ -50,24 +53,48 @@ async function getAuthor(url){
       "name": user.name,
       "description": user.description,
     }
+  } catch(err) {
+     return {
+      "name": err,
+      "description": err,
+    }   
+  }
+  
+}
+async function getFeaturedImage(mediaId){
+    let media = await fetch( mediaId , {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }).then(res => res.json());  
+
+    return {
+      "url": media[0].link,
+      "alt": media[0].title.rendered,
+    }
 }
 async function getBlogs() {
-    let page = await fetch('http://creolestudios.com/wp-json/wp/v2/posts?per_page=1' , {
+    let page = await fetch('https://creolestudios.com/wp-json/wp/v2/posts?per_page=1&_embed' , {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       }
     }).then(res => res.json());
-    const author = await getAuthor(page[0].author)
+    const author = await getAuthor(page[0].author);
+    const image = await getFeaturedImage(page[0]._links['wp:attachment'][0].href);
     return {
       'title': page[0].title.rendered,
       'user': author,
       'link': page[0].link,
+      'image': image, 
     }
    
 }
 
 server.post('/creole', assistant);
+
+server.get('/')
 
 server.listen(server.get('port'), function () {
 	console.log('Express server started on port', server.get('port'));
