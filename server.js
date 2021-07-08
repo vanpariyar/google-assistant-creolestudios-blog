@@ -1,41 +1,54 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const {dialogflow, SimpleResponse, JsonObject, BasicCard, Button, Image} = require('actions-on-google');
+const {
+  conversation,
+  Simple,
+  Card,
+  Image,
+  Link,
+  OpenURL
+} = require('@assistant/conversation');
+
+// const { conversation } = require('actions-on-google');
+
+
 const fetch  = require('node-fetch');
 const Entities = require('html-entities').XmlEntities;
- 
 
 const server = express();
 const entities = new Entities();
-const assistant = dialogflow();
+const assistant = conversation({debug: true});
 
-		
 server.set('port', process.env.PORT || 5000);
 server.use(bodyParser.json({type: 'application/json'}));
 
 server.use(express.json());
 
-assistant.intent('Get New Blogs', async conv => {
+assistant.handle('Get_New_Blogs', async conv => {
   const data = await getBlogs();
-  conv.close(new SimpleResponse({
+  conv.add(new Simple({
       speech: `New Blog title is ${ entities.decode(data.title) } beautifully written by ${ entities.decode(data.user.name) } who is ${ entities.decode(data.user.description) }`,
       text: `New Blog title is ${ entities.decode(data.title) } beautifully written by ${ entities.decode(data.user.name) } who is ${ entities.decode(data.user.description) } ` ,
   }));
-  conv.close(new BasicCard({
+  conv.add(new Card({
     text: `New Blog title is ${ entities.decode(data.title) } beautifully written by **${ entities.decode(data.user.name) }** who is *${ entities.decode(data.user.description) }* `, // Note the two spaces before '\n' required for
     subtitle: `${ entities.decode(data.user.name) }`,
     title: `Title: ${ entities.decode(data.title) }`,
-    buttons: new Button({
-      title: 'Learn More',
-      url: data.link,
+    button: new Link({
+      name: 'Learn More',
+      open: {
+        hint: "LINK_UNSPECIFIED",
+        "url": data.link,
+      },
     }),
     image: new Image({
       url: data.image.url,
       alt: data.image.alt,
     }),
-    display: 'CROPPED',
+    imageFill: 'CROPPED',
   }));
   
+  conv.scene.next.name = 'actions.page.END_CONVERSATION';
   
 });
 
@@ -51,7 +64,7 @@ async function getAuthor(url){
 
     return {
       "name": user.name,
-      "description": user.description,
+      "description": user.description.replace(/(<([^>]+)>)/gi, ""),
     }
   } catch(err) {
      return {
@@ -72,19 +85,6 @@ async function getFeaturedImage(mediaId){
     return {
       "url": media[0].link,
       "alt": media[0].title.rendered,
-    }
-}
-async function getFeaturedImage(mediaId){
-    let media = await fetch( 'https://www.creolestudios.com/wp-json/wp/v2/media/' + mediaId , {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    }).then(res => res.json());  
-
-    return {
-      "url": media.media_details.sizes.medium.source_url,
-      "alt": media.title.rendered,
     }
 }
 async function getBlogs() {
